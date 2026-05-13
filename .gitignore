@@ -174,3 +174,29 @@ session.json
 # OS specific (Good to have)
 .DS_Store
 Thumbs.db
+
+# === INFRASTRUCTURE & PERSISTENCE ===
+volumes/
+data/
+db_data/
+
+# === DATABASE BACKUPS ===
+*.sql
+*.dump
+backup/
+*.sqlite
+
+# === SECURITY & SSL ===
+*.pem
+*.key
+*.crt
+*.p12
+*.csr
+
+# === OPERATING SYSTEM & IDEs ===
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
