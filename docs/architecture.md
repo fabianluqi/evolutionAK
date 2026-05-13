@@ -101,3 +101,19 @@ A infraestrutura encontra-se operacional em ambiente de produção inicial (self
 - firewall mais restritivo
 - observabilidade e métricas
 - escalabilidade horizontal dos workers
+
+## Diagrama de Infraestrutura
+
+```mermaid
+graph TD
+
+Internet --> Traefik
+Traefik --> EvolutionAPI
+Traefik --> n8nWebhook
+Traefik --> n8nEditor
+
+n8nWebhook --> Redis
+Redis --> n8nWorker
+n8nWorker --> Postgres
+EvolutionAPI --> n8nWebhook
+```
