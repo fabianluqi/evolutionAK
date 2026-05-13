@@ -63,41 +63,6 @@ O fluxo de uma automação típica segue a hierarquia de microsserviços para ga
 ### Certificados Automáticos
 O Traefik gerencia automaticamente o **SSL/TLS** (HTTPS) para todos os subdomínios, garantindo criptografia em trânsito sem intervenção manual.
 
-### Investigação de Segurança (Logs do Traefik)
-Foi identificada uma tentativa externa de acesso ao arquivo `.env` (`GET /.env HTTP/1.1`).
-* **Validação:** Foi executado um teste manual via terminal:
-    ```bash
-    curl -k https://localhost/.env
-    ```
-* **Resultado:** `404 Not Found`.
-* **Conclusão:** As variáveis de ambiente estão protegidas e não são acessíveis via diretório público, pois são injetadas diretamente pelo Easypanel/Docker.
-
-## 🚨 Disaster Recovery & Troubleshooting
-
-Esta seção registra incidentes críticos, lições aprendidas e os procedimentos de recuperação para garantir a resiliência do ecossistema **EvolutionAK**.
-
-### 1. Procedimento de "Hard Reset" (Destroy & Rebuild)
-**Cenário:** Corrupção de estado nos containers (Redis/Traefik) ou falha persistente de sincronia na Evolution API (mensagens presas em "Aguardando mensagem").
-
-* **Causa Raiz:** Persistência de sessões inválidas ou cache corrompido no Redis que impediam a descriptografia de ponta a ponta.
-* **Ação:** Execução do protocolo "Destroy" para limpeza de volumes temporários.
-* **Passos de Recuperação:**
-    1.  **Interrupção:** Parar todos os serviços via Easypanel.
-    2.  **Limpeza de Cache:** Deletar/Limpar volumes do Redis para eliminar "sessões fantasmas".
-    3.  **Rebuild:** Forçar o rebuild das imagens para garantir o uso da última versão estável.
-    4.  **Sincronização:** Re-autenticar instâncias do WhatsApp via QR Code na Evolution API.
-* **Lição Aprendida:** Nem todo erro é de código ou lógica de workflow; falhas na camada de persistência de estado (Redis/Cache) exigem um reset completo da infraestrutura para restaurar a integridade.
-
-### 2. Investigação de Segurança (Logs do Traefik)
-**Cenário:** Identificada tentativa externa de acesso ao arquivo sensível `.env` através da requisição `GET /.env HTTP/1.1`.
-
-* **Validação de Vulnerabilidade:** Foi executado um teste manual via terminal para verificar a exposição:
-    ```bash
-    curl -k [https://sua-url-aqui.com/.env](https://sua-url-aqui.com/.env)
-    ```
-* **Resultado:** `404 Not Found`.
-* **Conclusão:** A arquitetura está segura. As variáveis de ambiente são injetadas diretamente pelo Docker/Easypanel no runtime do container e não residem em diretórios públicos ou estáticos acessíveis pelo servidor web/proxy.
-
 ---
 
 ## 5. Persistência de Dados
@@ -147,3 +112,29 @@ graph TD
     n8nEditor --> Postgres[(PostgreSQL)]
     n8nWorker --> Postgres
 ```
+
+## 🚨 Disaster Recovery & Troubleshooting
+
+### 1. Procedimento de "Hard Reset" (Destroy da Droplet)
+**Cenário:** Falha crítica de conectividade externa e SSL. A Evolution API estava inacessível e o Traefik não conseguia validar certificados para subdomínios essenciais (como o n8n).
+
+* **Causa Raiz:** Conflito persistente nas configurações de rede/proxy na VPS que impediam a exposição correta dos serviços via HTTPS.
+* **Ação:** Execução do "Destroy" completo da Droplet na DigitalOcean para uma reconstrução do zero.
+* **Passos de Recuperação:**
+    1.  Exclusão da Droplet antiga e criação de uma nova instância.
+    2.  Reinstalação do Easypanel e re-deploy da stack.
+    3.  Reconfiguração dos registros DNS e validação dos certificados SSL via Traefik.
+* **Resultado:** Conectividade restabelecida e SSL validado em todos os serviços.
+
+### 2. Incidente: Mensagens "Aguardando Mensagem" (Em Investigação)
+**Cenário:** Após a reconstrução da infra, algumas mensagens automáticas chegam ao destinatário com o placeholder *"Aguardando mensagem. Essa ação pode levar alguns instantes"*.
+
+* **Status Atual:** ⚠️ **Não corrigido.** * **Diagnóstico:** Problema de descriptografia de ponta a ponta. Ocorre geralmente quando a sessão do WhatsApp perde a sincronia com as chaves armazenadas na Evolution API após reconexões.
+* **Tentativas de Resolução:**
+    - O rebuild da infra reduziu a frequência, mas não eliminou o erro em mensagens enviadas imediatamente após o pareamento.
+* **Próximos Passos:** Testar a deleção manual da instância dentro da Evolution API e pareamento via Type Pair (Código ou QR) com o celular ativo e conectado.
+
+### 3. Investigação de Segurança (Logs do Traefik)
+**Cenário:** Tentativa externa de acesso ao arquivo `.env` (`GET /.env`).
+* **Validação:** Teste via `curl -k https://url.com/.env` retornou `404 Not Found`.
+* **Conclusão:** Variáveis de ambiente protegidas; injetadas via Docker e não acessíveis via web.
