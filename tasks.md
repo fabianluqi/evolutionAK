@@ -8,7 +8,7 @@
 *   [ ] **GitHub Organizado**
     *   Limpar repositórios obsoletos.
     *   Padronizar commits e branches.
-*   [ ] **Documentar Arquitetura Atual**
+*   [x] **Documentar Arquitetura Atual**
     *   Mapear fluxos de dados.
     *   Criar diagramas de componentes atuais.
 *   [ ] **Validar Firewall e Exposição Pública**
@@ -17,7 +17,7 @@
 *   [ ] **Remover Exposição do Easypanel**
     *   Restringir acesso externo ao painel.
     *   Utilizar VPN ou túneis seguros.
-*   [ ] **Organizar Segredos**
+*   [x] **Organizar Segredos**
     *   Auditar arquivos `.env`.
     *   Configurar `.gitignore` corretamente.
     *   Rotacionar chaves de API expostas.
