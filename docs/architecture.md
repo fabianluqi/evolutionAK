@@ -107,15 +107,19 @@ A infraestrutura encontra-se operacional em ambiente de produção inicial (self
 ```mermaid
 graph TD
 
-Internet --> Traefik
-Traefik --> EvolutionAPI
-Traefik --> n8nWebhook
-Traefik --> n8nEditor
+    Internet((Internet)) --> Traefik{Traefik}
 
-n8nWebhook --> Redis
-Redis --> n8nWorker
-n8nWorker --> Postgres
-EvolutionAPI --> n8nWebhook
+    Traefik --> n8nEditor[n8n Editor]
+    Traefik --> EvolutionAPI[Evolution API]
+
+    EvolutionAPI --> n8nWebhook[n8n Webhook]
+
+    n8nWebhook --> Redis[(Redis Queue)]
+
+    Redis --> n8nWorker[n8n Worker]
+
+    n8nEditor --> Postgres[(PostgreSQL)]
+    n8nWorker --> Postgres
 ```
 ```mermaid
 graph TD
