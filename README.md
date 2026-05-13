@@ -1,4 +1,3 @@
-````md
 # EvolutionAK Stack
 
 ### Sistema de vendas automatizado via chat
