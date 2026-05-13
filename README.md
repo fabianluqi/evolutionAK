@@ -1,5 +1,5 @@
 # EvolutionAK Stack
-# Sistema de vendas automatizado via chat 
+## Sistema de vendas automatizado via chat 
 ### Este projeto foi criado para o atendimento primario de estabelecimentos para com clientes no Whatsapp.
  Atualmente hospedado em uma VPS da DigitalOcean, foi criada a partir de um script usando EasyPanel e docker-compose.
  Os serviços usados são: Postgres, EvolutionAPI, Redis, e n8n (sendo eles n8nEditor, n8nWebhook e n8nWorker).
