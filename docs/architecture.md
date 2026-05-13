@@ -7,12 +7,27 @@ Este documento detalha a estrutura técnica, o fluxo de dados e os protocolos de
 ## 1. Visão Geral da Infraestrutura
 A infraestrutura utiliza **Docker** e **Easypanel**, com o **Traefik** atuando como proxy reverso para gerenciar o tráfego e certificados SSL automaticamente.
 
+## Stack Tecnológica
+
+- Docker
+- Easypanel
+- Traefik
+- PostgreSQL
+- Redis
+- n8n
+- Evolution API
+- VPS DigitalOcean
+
 ### Serviços Ativos:
 * **evolution-api:** Responsável por WhatsApp, Webhooks e integrações.
 * **n8n (Arquitetura de Filas):**
     * `n8n_editor`: Interface para criação de workflows (Porta 5678).
     * `n8n_webhook`: Instância dedicada a receber gatilhos externos.
     * `n8n_worker`: Instância para execução assíncrona de workflows.
+      A arquitetura utiliza o modo Queue do n8n para desacoplar:
+- interface
+- entrada de webhooks
+- processamento
 * **postgres:** Banco de dados principal (Porta 5432).
 * **redis:** Gerenciamento de Fila Bull e cache (Porta 6379).
 
