@@ -117,3 +117,14 @@ Redis --> n8nWorker
 n8nWorker --> Postgres
 EvolutionAPI --> n8nWebhook
 ```
+```mermaid
+graph TD
+    Internet((Internet)) --> Traefik{Traefik}
+    Traefik --> n8nEditor[n8n Editor]
+    Traefik --> EvolutionAPI[Evolution API]
+    EvolutionAPI --> n8nWebhook[n8n Webhook]
+    n8nEditor --> Postgres[(Postgres)]
+    n8nWebhook --> Redis((Redis Queue))
+    Redis --> n8nWorker[n8n Worker]
+    n8nWorker --> Postgres
+```
