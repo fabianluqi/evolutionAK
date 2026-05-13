@@ -72,11 +72,11 @@ Foi identificada uma tentativa externa de acesso ao arquivo `.env` (`GET /.env H
 * **Resultado:** `404 Not Found`.
 * **Conclusão:** As variáveis de ambiente estão protegidas e não são acessíveis via diretório público, pois são injetadas diretamente pelo Easypanel/Docker.
 
-### 🚨 Disaster Recovery & Troubleshooting
+## 🚨 Disaster Recovery & Troubleshooting
 
 Esta seção registra incidentes críticos, lições aprendidas e os procedimentos de recuperação para garantir a resiliência do ecossistema **EvolutionAK**.
 
-## 1. Procedimento de "Hard Reset" (Destroy & Rebuild)
+### 1. Procedimento de "Hard Reset" (Destroy & Rebuild)
 **Cenário:** Corrupção de estado nos containers (Redis/Traefik) ou falha persistente de sincronia na Evolution API (mensagens presas em "Aguardando mensagem").
 
 * **Causa Raiz:** Persistência de sessões inválidas ou cache corrompido no Redis que impediam a descriptografia de ponta a ponta.
