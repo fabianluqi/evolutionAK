@@ -72,6 +72,32 @@ Foi identificada uma tentativa externa de acesso ao arquivo `.env` (`GET /.env H
 * **Resultado:** `404 Not Found`.
 * **Conclusão:** As variáveis de ambiente estão protegidas e não são acessíveis via diretório público, pois são injetadas diretamente pelo Easypanel/Docker.
 
+### 🚨 Disaster Recovery & Troubleshooting
+
+Esta seção registra incidentes críticos, lições aprendidas e os procedimentos de recuperação para garantir a resiliência do ecossistema **EvolutionAK**.
+
+## 1. Procedimento de "Hard Reset" (Destroy & Rebuild)
+**Cenário:** Corrupção de estado nos containers (Redis/Traefik) ou falha persistente de sincronia na Evolution API (mensagens presas em "Aguardando mensagem").
+
+* **Causa Raiz:** Persistência de sessões inválidas ou cache corrompido no Redis que impediam a descriptografia de ponta a ponta.
+* **Ação:** Execução do protocolo "Destroy" para limpeza de volumes temporários.
+* **Passos de Recuperação:**
+    1.  **Interrupção:** Parar todos os serviços via Easypanel.
+    2.  **Limpeza de Cache:** Deletar/Limpar volumes do Redis para eliminar "sessões fantasmas".
+    3.  **Rebuild:** Forçar o rebuild das imagens para garantir o uso da última versão estável.
+    4.  **Sincronização:** Re-autenticar instâncias do WhatsApp via QR Code na Evolution API.
+* **Lição Aprendida:** Nem todo erro é de código ou lógica de workflow; falhas na camada de persistência de estado (Redis/Cache) exigem um reset completo da infraestrutura para restaurar a integridade.
+
+### 2. Investigação de Segurança (Logs do Traefik)
+**Cenário:** Identificada tentativa externa de acesso ao arquivo sensível `.env` através da requisição `GET /.env HTTP/1.1`.
+
+* **Validação de Vulnerabilidade:** Foi executado um teste manual via terminal para verificar a exposição:
+    ```bash
+    curl -k [https://sua-url-aqui.com/.env](https://sua-url-aqui.com/.env)
+    ```
+* **Resultado:** `404 Not Found`.
+* **Conclusão:** A arquitetura está segura. As variáveis de ambiente são injetadas diretamente pelo Docker/Easypanel no runtime do container e não residem em diretórios públicos ou estáticos acessíveis pelo servidor web/proxy.
+
 ---
 
 ## 5. Persistência de Dados
