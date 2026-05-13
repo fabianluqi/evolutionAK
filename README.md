@@ -62,7 +62,7 @@ Essa abordagem permite:
 
 > 📌 Documentação completa disponível em:
 >
-> Documentação completa disponível em: [architecture.md](./docs/architecture.md)
+> [architecture.md](./docs/architecture.md)
 
 ---
 
