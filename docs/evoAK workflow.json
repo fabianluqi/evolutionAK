@@ -1,0 +1,116 @@
+{
+  "name": "evoAK workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "aula",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "206144b1-8218-4e2d-a0cb-29460fb653c8",
+      "name": "Webhook",
+      "webhookId": "426587fe-5b7e-4f80-b51b-09534c5b4692"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d69a24a6-72f9-4ec1-b602-8be66b90358e",
+              "name": "from",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "4e0ce5a9-1c8b-4b8e-bcd9-ecc1081f53db",
+              "name": "message",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "d2241eda-f101-41c1-a08b-e7d6ff7069e4",
+              "name": "instance",
+              "value": "={{ $json.body.instance }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        0
+      ],
+      "id": "4ca37532-13c2-4176-b3d9-2f40043b56fa",
+      "name": "padronizacao"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $json.instance }}",
+        "remoteJid": "={{ $json.from }}",
+        "messageText": "teste bot automatizado",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        448,
+        0
+      ],
+      "id": "5b69a87b-0dcb-4802-9ba6-a19ca86e6dea",
+      "name": "Enviar texto",
+      "credentials": {
+        "evolutionApi": {
+          "id": "BVBC8dPNS1QhlHYK",
+          "name": "Evolution account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "padronizacao",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "padronizacao": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "54b610fc-047b-4273-a68b-60b577e99702",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "262902f75bf38264bccf4ab06a700ce738f947901be847421e11bbb252d8f6b9"
+  },
+  "id": "2jH3rdOQRplti66E",
+  "tags": []
+}
