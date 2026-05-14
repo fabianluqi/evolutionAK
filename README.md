@@ -1,4 +1,4 @@
-# EvolutionAK 🚀
+      # EvolutionAK 🚀
 
 ### Sistema de vendas e atendimento automatizado via WhatsApp
 
@@ -153,49 +153,17 @@ As variáveis sensíveis NÃO devem ser commitadas no Git.
 
 ---
 
-# 🔒 Segurança
-
-A infraestrutura segue práticas de segurança para ambientes self-hosted.
-
-## Proteções implementadas
-
-* variáveis protegidas via `.env`
-* `.gitignore` configurado para secrets
-* SSL/TLS automático
-* proxy reverso isolando containers
-* comunicação interna via rede Docker
-* separação de serviços por responsabilidade
-
-## Investigação de Segurança
-
-Foi identificada uma tentativa externa de acesso ao arquivo `.env`.
-
-Teste realizado:
-
-```bash
-curl -k https://localhost/.env
-```
-
-Resultado:
-
-```txt
-404 Not Found
-```
-
-Conclusão:
-As variáveis de ambiente não estão expostas publicamente.
-
 ---
 
 # 📌 Status Atual
 
 | Área           | Status          |
 | -------------- | --------------- |
-| Infraestrutura | ✅ Operacional   |
-| SSL / Proxy    | ✅ Operacional   |
-| Queue Mode     | ✅ Operacional   |
-| Evolution API  | ⚙️ Configurando |
-| Workflows      | 📅 Planejado    |
+| Infraestrutura | ✅ Operacional  |
+| SSL / Proxy    | ✅ Operacional  |
+| Queue Mode     | ✅ Operacional  |
+| Evolution API  | ✅ Operacional |
+| Workflows      | ⚙️ Configurando |
 | IA / OpenAI    | 📅 Planejado    |
 | Monitoramento  | 📅 Planejado    |
 
